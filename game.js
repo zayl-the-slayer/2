@@ -1,54 +1,38 @@
-// Character data
-let character = {
-    name: "Hero",
-    level: 1,
-    health: 100,
-    gold: 0,
-    inventory: [],
-};
+// Game state
+let gameState = 0;
 
-// Game world descriptions
-const worldDescriptions = [
-    "You are in a mysterious dungeon.",
-    "You find yourself in a dense forest.",
-    "A bustling city lies before you.",
-    // Add more world descriptions here
-];
+// Function to update the game based on choices
+function updateGame() {
+    const storyText = document.getElementById("story-text");
+    const choice1Button = document.getElementById("choice-1");
+    const choice2Button = document.getElementById("choice-2");
 
-let currentWorldIndex = 0;
-
-// Function to update character stats
-function updateStats() {
-    document.getElementById("char-name").textContent = character.name;
-    document.getElementById("char-level").textContent = character.level;
-    document.getElementById("char-health").textContent = character.health;
-    document.getElementById("char-gold").textContent = character.gold;
-}
-
-// Function to explore the game world
-function exploreWorld() {
-    const worldDescription = document.getElementById("world-description");
-    const exploreButton = document.getElementById("explore-button");
-
-    const randomIndex = Math.floor(Math.random() * worldDescriptions.length);
-    worldDescription.textContent = worldDescriptions[randomIndex];
-
-    if (randomIndex === 0) {
-        // In a dungeon, chance to find gold
-        const foundGold = Math.random() < 0.3;
-        if (foundGold) {
-            const goldAmount = Math.floor(Math.random() * 50) + 10;
-            character.gold += goldAmount;
-            worldDescription.textContent += ` You found ${goldAmount} gold coins!`;
-        }
+    if (gameState === 0) {
+        storyText.textContent = "You are in a mysterious dungeon.";
+        choice1Button.textContent = "Explore further";
+        choice2Button.textContent = "Exit the dungeon";
+        gameState = 1;
+    } else if (gameState === 1) {
+        storyText.textContent = "You encounter a menacing creature!";
+        choice1Button.textContent = "Fight the creature";
+        choice2Button.textContent = "Flee in fear";
+        gameState = 2;
+    } else if (gameState === 2) {
+        storyText.textContent = "You bravely defeated the creature!";
+        choice1Button.textContent = "Search for treasure";
+        choice2Button.textContent = "Continue your adventure";
+        gameState = 3;
+    } else if (gameState === 3) {
+        storyText.textContent = "You found a chest full of gold!";
+        choice1Button.textContent = "Play again";
+        choice2Button.textContent = "";
+        gameState = 0;
     }
-
-    updateStats();
 }
 
-// Event listener for the explore button
-document.getElementById("explore-button").addEventListener("click", exploreWorld);
+// Event listeners for choice buttons
+document.getElementById("choice-1").addEventListener("click", updateGame);
+document.getElementById("choice-2").addEventListener("click", updateGame);
 
 // Initial game setup
-updateStats();
-exploreWorld();
+updateGame();
